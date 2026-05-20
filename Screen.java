@@ -26,6 +26,7 @@ public class Screen{
     private float x;
     private float y;
 
+    
     //------------------ SCREEN CONSTRUCTORS --------------------//
 
     /**

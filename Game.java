@@ -13,6 +13,7 @@ import processing.core.PConstants;
 import processing.core.PFont;
 import processing.core.PImage;
 import processing.data.JSONObject;
+import processing.sound.SoundFile;
 
 
 public class Game extends PApplet{
@@ -36,7 +37,7 @@ public class Game extends PApplet{
   // VARIABLES: splashScreen
   Screen splashScreen;
   String splashBgFile = "images/apcsa.png";
-  //SoundFile song;
+  SoundFile song;
 
   // VARIABLES: grid1 Screen (pieces on a grid pattern)
   Grid grid1;
@@ -50,7 +51,7 @@ public class Game extends PApplet{
   String chickJson = "sprites/chick_walk.json";
   int chickRow = 0;
   int chickCol = 2;
-  int health = 3;
+  int health = Integer.MAX_VALUE;
   Button b1;
 
   // VARIABLES: skyWorld Screen (characters move by pixels)
@@ -157,8 +158,8 @@ public class Game extends PApplet{
 
     //SETUP: Sound
       // Load a soundfile from the sounds folder of the sketch and play it back
-      // song = new SoundFile(p, "sounds/Lenny_Kravitz_Fly_Away.mp3");
-      // song.play();
+      song = new SoundFile(p, "sounds/FunkyTown.mp3");
+      song.play();
 
      // Trigger the new initialization phase
      System.out.println("Initial Rendering of Game...");
@@ -254,13 +255,33 @@ public class Game extends PApplet{
     
     //KEYS FOR LEVEL1
     if(currentScreen == grid1){
-
+        //Fixed WASD controls for the chick
       //set [S] key to move the chick down & avoid Out-of-Bounds errors
-      if(p.keyCode == 83){        
-
+      if(p.key == 's'){        
+        //
         //change the field for chickRow
-        chickRow++;
+        if(chickRow < grid1.getNumRows() - 1){
+          chickRow++;
+        }
       }
+      
+      //set [A] key to move the chick left
+      if(p.key == 'a'){
+         if(chickCol > 0){
+          chickCol--;
+        }
+      }
+      if(p.key == 'd'){
+         if(chickCol < grid1.getNumCols() - 1){
+        chickCol++;
+         }
+      }
+      if(p.key == 'w'){
+        if(chickRow > 0){
+          chickRow--;
+        }
+      }
+        //End of WASD controls
 
       // if the 'n' key is pressed, ask for their name
       if(p.key == 'n'){
@@ -327,6 +348,40 @@ public class Game extends PApplet{
     }
     
 
+  }
+
+  public void moveChick(char key){
+    GridLocation chickLoc = new GridLocation(chickRow, chickCol);
+    // Move the chick based on the current screen
+    //set [S] key to move the chick down & avoid Out-of-Bounds errors
+      if(key == 's'){        
+
+        //change the field for chickRow
+      if(chickRow < grid1.getNumRows() - 1 && checkCollision(chickLoc, new GridLocation(chickRow + 1, chickCol))){
+          chickRow++;
+        }
+
+      }
+
+      //set [A] key to move the chick left
+      if(key == 'a'){
+
+         if(chickCol > 0){
+          chickCol--;
+        }
+
+      }
+      if(key == 'd'){
+        //set [D] key to move the chick right
+        if(chickCol < grid1.getNumCols() - 1){
+        chickCol++;
+         }
+      }
+      if(key == 'w'){
+        if(chickRow > 0){
+          chickRow--;
+        }
+      }
   }
 
 
