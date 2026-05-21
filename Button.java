@@ -32,6 +32,7 @@ public class Button extends Sprite{
     private boolean isVisible;
     private boolean doesHoverHighlight;
     private boolean doesClickHighlight;
+    private boolean clicky = false;
 
 
     //------------------ BUTTON CONSTRUCTORS --------------------//
@@ -118,12 +119,27 @@ public class Button extends Sprite{
 
     public boolean isClicked(){
         if (isMouseOverButton() && p.mousePressed) {
+            if(!clicky) {
             System.out.println("Button Clicked");
+            clicky = true;
             return true;
+            }
+
         } else{
-            return false;
+            clicky = false;
         }
+        return false;
+        
     }
+    // public boolean isReleased(){
+
+    //     if (isMouseOverButton() && p.mouseReleased()) {
+    //         System.out.println("Button Released");
+    //         return true;
+    //     } else{
+    //         return false;
+    //     }
+    // }
     
     public boolean isMouseOverButton(){ //move to Sprite class eventually
         if(shape.equals("RECT")){
