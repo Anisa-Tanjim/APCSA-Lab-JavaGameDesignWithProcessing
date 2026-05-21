@@ -32,7 +32,7 @@ public class Button extends Sprite{
     private boolean isVisible;
     private boolean doesHoverHighlight;
     private boolean doesClickHighlight;
-    private boolean clicky = false;
+    private boolean isClicked = false;
 
 
     //------------------ BUTTON CONSTRUCTORS --------------------//
@@ -119,14 +119,14 @@ public class Button extends Sprite{
 
     public boolean isClicked(){
         if (isMouseOverButton() && p.mousePressed) {
-            if(!clicky) {
+            if(!isClicked) {
             System.out.println("Button Clicked");
-            clicky = true;
+            isClicked = true;
             return true;
             }
 
         } else{
-            clicky = false;
+            isClicked = false;
         }
         return false;
         
