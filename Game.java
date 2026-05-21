@@ -38,6 +38,7 @@ public class Game extends PApplet{
   Screen splashScreen;
   String splashBgFile = "images/apcsa.png";
   SoundFile song;
+  SoundFile song2;
 
   // VARIABLES: grid1 Screen (pieces on a grid pattern)
   Grid grid1;
@@ -53,6 +54,7 @@ public class Game extends PApplet{
   int chickCol = 2;
   int health = Integer.MAX_VALUE;
   Button b1;
+  Button b2;
 
   // VARIABLES: skyWorld Screen (characters move by pixels)
   World skyWorld;
@@ -66,6 +68,7 @@ public class Game extends PApplet{
   World brickWorld;
   String brickWorldBgFile = "images/wall.jpg";
   Platform plat;
+  Platform plat2;
 
   // VARIABLES: endScreen
   World endScreen;
@@ -122,6 +125,15 @@ public class Game extends PApplet{
     b1.setButtonColor(PColor.BLACK);
     b1.setHoverColor(PColor.get(100,50,200));
     b1.setOutlineColor(PColor.WHITE);
+
+    b2 = new Button(p, "rect", 225, 475, 150, 50, "?");
+    // b2.setFontStyle("fonts/spidermanFont.ttf");
+    b2.setFontStyle("Comic Sans MS");
+    b2.setTextColor(PColor.MAGENTA);
+    b2.setButtonColor(PColor.GREEN);
+    b2.setHoverColor(PColor.get(100,50,200));
+    b2.setOutlineColor(PColor.RED);
+
     String[][] tileMarks = {
       {"R","N","B","Q","K","B","N","R"},
       {"P","P","P","P","P","P","P","P"},
@@ -145,9 +157,11 @@ public class Game extends PApplet{
     // SETUP: Setup brickWorld constructor + objects
     brickWorld = new World(p,"platformer", brickWorldBgFile);
     plat = new Platform(p, PColor.MAGENTA, 500.0f, 100.0f, 200.0f, 20.0f);
+    plat2 = new Platform(p, PColor.BLUE,500.0f, 50.0f, 300.0f, 5.0f);
     plat.setOutlineColor(PColor.BLACK);
     // plat.startGravity(5.0f); //sets gravity to a rate of 5.0
     brickWorld.addSprite(plat);    
+    brickWorld.addSprite(plat2);
     System.out.println("Finished setup for brickWorld...");
 
     //SETUP: Setup endScreen constructor + objects
@@ -159,6 +173,7 @@ public class Game extends PApplet{
     //SETUP: Sound
       // Load a soundfile from the sounds folder of the sketch and play it back
       song = new SoundFile(p, "sounds/FunkyTown.mp3");
+      song2 = new SoundFile(p, "sounds/ScoobyDooby.mp3");
       song.play();
 
      // Trigger the new initialization phase
@@ -185,6 +200,7 @@ public class Game extends PApplet{
     chick.initialRender();
     grid1.setTileSprite(new GridLocation (chickRow, chickCol), chick);
     grid1.addSprite(b1);
+    grid1.addSprite(b2);
     piece1 = Resource.loadImage(piece1File);
     piece1.resize(grid1.getTileWidth(),grid1.getTileHeight());
     System.out.println("Done intial render of grid1...");
@@ -203,7 +219,8 @@ public class Game extends PApplet{
     brickWorld.initialRender();
     plat.setOutlineColor(PColor.BLACK);
     // plat.startGravity(5.0f); //sets gravity to a rate of 5.0
-    brickWorld.addSprite(plat);    
+    brickWorld.addSprite(plat);
+    brickWorld.addSprite(plat2);    
     System.out.println("Done loading Level 3 (brickWorld)...");
 
     //RENDER: end objects
@@ -317,6 +334,7 @@ public class Game extends PApplet{
       //reset the moving Platform every time the Screen is re-displayed
       plat.moveTo(500.0f, 100.0f);
       plat.setSpeed(0,0);
+      plat2.moveTo(500f, 250f);
     }
 
   }
@@ -442,8 +460,13 @@ public class Game extends PApplet{
         System.out.println("\nButton Clicked");
         currentScreen = skyWorld;
       }
-    
+      if(b2.isClicked()){
+        song.stop();
+        song2.play();
+        b2.startGravity();
     }
+
+  }
     
     // UPDATE: skyWorld Screen
     if(currentScreen == skyWorld){
@@ -461,7 +484,7 @@ public class Game extends PApplet{
 
       // Print a '3 in console when brickWorld
       System.out.print("3");
-
+      
 
     }
 
